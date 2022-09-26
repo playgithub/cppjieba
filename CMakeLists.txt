@@ -37,8 +37,7 @@ target_include_directories(${PROJECT_NAME}
                                $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
                                $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/submodules/limonp/include>
                                $<BUILD_INTERFACE:${CONFIGURED_FILES_ROOT}/include>
-                               $<INSTALL_INTERFACE:${CMAKE_INSTALL_FULL_INCLUDEDIR}>
-                               $<INSTALL_INTERFACE:${CMAKE_INSTALL_FULL_INCLUDEDIR}/3rd-parties/limonp/include>)
+                               $<INSTALL_INTERFACE:${CMAKE_INSTALL_FULL_INCLUDEDIR}>)
 
 ##################
 # config for lib #
@@ -56,7 +55,7 @@ configure_file(config/config.json.in
 
 set(DEFAULT_CONFIG_FILE_PATH ${CONFIGURED_FILES_ROOT}/config/config.json)
 configure_file(include/cppjieba/config.hpp.in
-               ${CONFIGURED_FILES_ROOT}/source/include/cppjieba/config.hpp
+               ${CONFIGURED_FILES_ROOT}/include/cppjieba/config.hpp
                @ONLY)
 
 ########
@@ -83,12 +82,12 @@ install(EXPORT ${PROJECT_NAME}
         NAMESPACE ${PROJECT_NAME}::
         FILE ${PROJECT_NAME}-config.cmake)
 
-install(DIRECTORY source/include/cppjieba/
+install(DIRECTORY include/cppjieba/
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
         FILES_MATCHING
         PATTERN *.hpp)
 
-install(DIRECTORY source/3rd-party
+install(DIRECTORY submodules/limonp/include/limonp
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
 
 set(DICT_ROOT ${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/dict)
@@ -110,9 +109,9 @@ install(FILES ${CONFIGURED_FILES_ROOT}/config/config.json.for_install
         RENAME config.json)
 
 set(DEFAULT_CONFIG_FILE_PATH  ${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/config/config.json)
-configure_file(source/include/cppjieba/config.hpp.in
-               ${CONFIGURED_FILES_ROOT}/source/include/cppjieba/config.hpp.for_install
+configure_file(include/cppjieba/config.hpp.in
+               ${CONFIGURED_FILES_ROOT}/include/cppjieba/config.hpp.for_install
                @ONLY)
-install(FILES ${CONFIGURED_FILES_ROOT}/source/include/cppjieba/config.hpp.for_install
+install(FILES ${CONFIGURED_FILES_ROOT}/include/cppjieba/config.hpp.for_install
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
         RENAME config.hpp)

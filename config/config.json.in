@@ -1,0 +1,10 @@
+{
+    "dict":
+    {
+        "jieba_dict_path": "@JIEBA_DICT_PATH@",
+        "hmm_model_path": "@HMM_MODEL_PATH@",
+        "idf_path": "@IDF_PATH@",
+        "stop_words_path": "@STOP_WORDS_PATH@",
+        "user_dict_path": "@USER_DICT_PATH@"
+    }
+}

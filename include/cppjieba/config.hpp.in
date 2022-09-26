@@ -1,0 +1,75 @@
+#pragma once
+
+#include <string>
+#include <fstream>
+#include <sstream>
+
+#include <rapidjson/document.h>
+#include <rapidjson/istreamwrapper.h>
+#include <rapidjson/error/en.h>
+
+namespace cppjieba
+{
+	class config
+	{
+	public:
+		void load_default()
+		{
+			load_from_file("@DEFAULT_CONFIG_FILE_PATH@");
+		}
+		void load_from_file(const std::string & path)
+		{
+			std::ifstream ifs(path);
+
+			if (ifs.fail())
+			{
+				std::ostringstream oss;
+				oss << "failed to open file (" << path << ')';
+				throw std::invalid_argument(oss.str());
+			}
+
+			rapidjson::IStreamWrapper isw(ifs);
+
+			rapidjson::Document jd;
+			jd.ParseStream(isw);
+
+			if (jd.HasParseError())
+			{
+				rapidjson::ParseErrorCode e_code = jd.GetParseError();
+				const RAPIDJSON_ERROR_CHARTYPE * e_msg = rapidjson::GetParseError_En(e_code);
+				throw std::runtime_error(e_msg);
+			}
+
+			const auto & jv_dict = jd["dict"];
+
+			const rapidjson::Value * jv = nullptr;
+
+			jv = &jv_dict["jieba_dict_path"];
+			__dict_path_jieba_dict.assign(std::string(jv->GetString(), jv->GetStringLength()));
+
+			jv = &jv_dict["hmm_model_path"];
+			__dict_path_hmm_model.assign(std::string(jv->GetString(), jv->GetStringLength()));
+
+			jv = &jv_dict["idf_path"];
+			__dict_path_idf.assign(std::string(jv->GetString(), jv->GetStringLength()));
+
+			jv = &jv_dict["stop_words_path"];
+			__dict_path_stop_words.assign(std::string(jv->GetString(), jv->GetStringLength()));
+
+			jv = &jv_dict["user_dict_path"];
+			__dict_path_user_dict.assign(std::string(jv->GetString(), jv->GetStringLength()));
+		}
+	public:
+		const std::string & get_dict_path_jieba_dict() const { return __dict_path_jieba_dict; }
+		const std::string & get_dict_path_hmm_model() const { return __dict_path_hmm_model; }
+		const std::string & get_dict_path_idf() const { return __dict_path_idf; }
+		const std::string & get_dict_path_stop_words() const { return __dict_path_stop_words; }
+		const std::string & get_dict_path_user_dict() const { return __dict_path_user_dict; }
+	private:
+		std::string __dict_path_jieba_dict;
+		std::string __dict_path_hmm_model;
+		std::string __dict_path_idf;
+		std::string __dict_path_stop_words;
+		std::string __dict_path_user_dict;
+	};
+}
