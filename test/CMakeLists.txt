@@ -1,3 +1,5 @@
+find_package(GTest REQUIRED)
+
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 
 ADD_EXECUTABLE(demo demo.cpp)
