@@ -1,4 +1,4 @@
 [submodule "limonp"]
 	path = submodules/limonp
-	url = https://github.com/playgithub/limonp.git
+	url = https://github.com/yanyiwu/limonp.git
 	branch = security_fix
