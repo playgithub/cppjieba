@@ -1,0 +1,28 @@
+pkgname=cppjieba-alg
+pkgver="2.0"
+pkgrel=1
+pkgdesc="C++ lib to cut Chinese words"
+arch=('x86_64')
+provides=()
+license=('MIT')
+depends=('rapidjson')
+makedepends=('cmake>=3.20' 'git' 'openssl')
+source=("$pkgname-$pkgver"::"git+ssh://github.com/playgithub/cppjieba.git#branch=dev")
+sha256sums=('SKIP')
+install_prefix=/usr/local
+
+build() {
+    cd "$pkgname-$pkgver"
+
+    git submodule init
+    git submodule update
+
+    cmake -S . \
+          -B out \
+          -DCMAKE_BUILD_TYPE=Release
+}
+
+package() {
+	cd "$pkgname-$pkgver"
+    DESTDIR="$pkgdir/" cmake --install out --prefix="$install_prefix"
+}
